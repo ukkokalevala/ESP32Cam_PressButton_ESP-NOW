@@ -5,7 +5,7 @@
 #define BUTTON_PIN 8
 
 // Receiver MAC Address (replace with your ESP32-CAM's MAC address)
-uint8_t receiverMAC[] = {0x30, 0xC6, 0xF7, 0x21, 0x5A, 0xA4};
+uint8_t receiverMAC[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; // ENTER YOUR MAC ADDRESS HERE
 
 void setup() {
   pinMode(BUTTON_PIN, INPUT_PULLUP); // Configure button pin with pull-up resistor
