@@ -24,7 +24,7 @@
 #define PCLK_GPIO_NUM    22
 
 // MAC address of the ESP32-C3 sender
-uint8_t senderMAC[] = {0x34, 0xB4, 0x72, 0x4E, 0xCB, 0x74};
+uint8_t senderMAC[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; // YOUR MAC ADDRESS
 
 // Callback when data is received
 void onDataReceive(const esp_now_recv_info_t *recvInfo, const uint8_t *data, int len) {
