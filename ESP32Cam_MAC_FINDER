@@ -1,0 +1,25 @@
+#include <WiFi.h>
+
+void setup() {
+  Serial.begin(115200);
+  Serial.println("\nESP32-CAM MAC Address Finder");
+
+  // Force WiFi subsystem initialization
+  WiFi.mode(WIFI_STA);   // Set WiFi to station mode
+  WiFi.disconnect();     // Disconnect from any previous session
+  delay(100);
+
+  // Print the MAC address
+  String macAddress = WiFi.macAddress();
+  Serial.print("MAC Address: ");
+  Serial.println(macAddress);
+
+  if (macAddress == "00:00:00:00:00:00") {
+    Serial.println("Error: Unable to retrieve MAC Address. Restarting...");
+    ESP.restart();  // Restart ESP32 if MAC is not retrieved
+  }
+}
+
+void loop() {
+  // Do nothing
+}
