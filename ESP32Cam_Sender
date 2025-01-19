@@ -1,0 +1,47 @@
+// ESP32-C3 Sender Code
+#include <esp_now.h>
+#include <WiFi.h>
+
+#define BUTTON_PIN 8
+
+// Receiver MAC Address (replace with your ESP32-CAM's MAC address)
+uint8_t receiverMAC[] = {0x30, 0xC6, 0xF7, 0x21, 0x5A, 0xA4};
+
+void setup() {
+  pinMode(BUTTON_PIN, INPUT_PULLUP); // Configure button pin with pull-up resistor
+  Serial.begin(115200);
+  WiFi.mode(WIFI_STA);
+
+  // Initialize ESP-NOW
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("ESP-NOW initialization failed!");
+    return;
+  }
+
+  // Register peer
+  esp_now_peer_info_t peerInfo;
+  memcpy(peerInfo.peer_addr, receiverMAC, 6);
+  peerInfo.channel = 0;  // Use default WiFi channel
+  peerInfo.encrypt = false;
+
+  if (esp_now_add_peer(&peerInfo) != ESP_OK) {
+    Serial.println("Failed to add peer!");
+    return;
+  }
+
+  Serial.println("Sender ready. Press the button to send a signal.");
+}
+
+void loop() {
+  static bool lastButtonState = HIGH;
+  bool buttonState = digitalRead(BUTTON_PIN);
+
+  if (buttonState == LOW && lastButtonState == HIGH) {
+    Serial.println("Button pressed, sending signal...");
+    const char *message = "CAPTURE";
+    esp_now_send(receiverMAC, (uint8_t *)message, strlen(message));
+    delay(200); // Simple debounce
+  }
+
+  lastButtonState = buttonState;
+}
